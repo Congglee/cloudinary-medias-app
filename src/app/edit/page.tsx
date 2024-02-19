@@ -5,6 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CldImage } from "next-cloudinary";
 import { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function EditPage({
   searchParams: { publicId },
@@ -21,7 +26,6 @@ export default function EditPage({
     | "pixelate"
     | "bg-remove"
   >();
-
   const [pendingPrompt, setPendingPrompt] = useState("");
   const [prompt, setPrompt] = useState("");
 
@@ -32,27 +36,32 @@ export default function EditPage({
           <h1 className="text-4xl font-bold">Edit {publicId}</h1>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 flex-wrap">
           <Button variant="ghost" onClick={() => setTransformation(undefined)}>
             Clear All
           </Button>
-
           <div className="flex flex-col gap-4">
-            <Button
-              onClick={() => {
-                setTransformation("generative-fill");
-                setPrompt(pendingPrompt);
-              }}
-            >
-              Apply Generative Fill
-            </Button>
-            <Label>Prompt</Label>
-            <Input
-              value={pendingPrompt}
-              onChange={(e) => setPendingPrompt(e.currentTarget.value)}
-            />
-          </div>
+            <Popover>
+              <PopoverTrigger>
+                <Button
+                  onClick={() => {
+                    setTransformation("generative-fill");
+                    setPrompt(pendingPrompt);
+                  }}
+                >
+                  Apply Generative Fill
+                </Button>
+              </PopoverTrigger>
 
+              <PopoverContent className="flex flex-col gap-3">
+                <Label>Prompt</Label>
+                <Input
+                  value={pendingPrompt}
+                  onChange={(e) => setPendingPrompt(e.currentTarget.value)}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
           <Button onClick={() => setTransformation("blur")}>Apply Blur</Button>
           <Button onClick={() => setTransformation("grayscale")}>
             Convert to Gray
@@ -60,22 +69,21 @@ export default function EditPage({
           <Button onClick={() => setTransformation("pixelate")}>
             Pixelate
           </Button>
-
           <Button onClick={() => setTransformation("bg-remove")}>
             Remove Background
           </Button>
         </div>
 
         <div className="grid grid-cols-2 gap-12">
-          <CldImage src={publicId} width="400" height="300" alt="some image" />
+          <CldImage src={publicId} width="500" height="300" alt="some-image" />
 
           {transformation === "generative-fill" && (
             <CldImage
               src={publicId}
-              width="1400"
-              height="900"
-              alt="some image"
-              crop="pad"
+              width="500"
+              height="300"
+              alt="some-image"
+              // crop="thumb"
               fillBackground={{
                 prompt,
               }}
@@ -85,40 +93,40 @@ export default function EditPage({
           {transformation === "blur" && (
             <CldImage
               src={publicId}
-              width="1200"
-              height="1400"
+              width="500"
+              height="300"
+              alt="some-image"
               blur="800"
-              alt="some image"
             />
           )}
 
           {transformation === "grayscale" && (
             <CldImage
               src={publicId}
-              width="1200"
-              height="1400"
+              width="500"
+              height="300"
+              alt="some-image"
               grayscale
-              alt="some image"
             />
           )}
 
           {transformation === "pixelate" && (
             <CldImage
               src={publicId}
-              width="1200"
-              height="1400"
+              width="500"
+              height="300"
+              alt="some-image"
               pixelate
-              alt="some image"
             />
           )}
 
           {transformation === "bg-remove" && (
             <CldImage
               src={publicId}
-              width="1200"
-              height="700"
+              width="500"
+              height="300"
+              alt="some-image"
               removeBackground
-              alt="some image"
             />
           )}
         </div>

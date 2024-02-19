@@ -1,12 +1,22 @@
 "use client";
 
-import { Heart } from "@/components/icons/heart";
-import { CldImage, CldImageProps } from "next-cloudinary";
-import { useState, useTransition } from "react";
-import { FullHeart } from "@/components/icons/full-heart";
 import { SearchResult } from "@/app/gallery/page";
-import { setAsFavoriteAction } from "@/app/gallery/actions";
-import { ImageMenu } from "./image-menu";
+import { FullHeart } from "@/components/icons/full-heart";
+import { Heart } from "@/components/icons/heart";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Pencil } from "lucide-react";
+import { CldImage, CldImageProps } from "next-cloudinary";
+import Link from "next/link";
+import { useState, useTransition } from "react";
+import { AddToAlbumDialog } from "./add-to-album-dialog";
+import { Menu } from "./icons/menu";
+import { Button } from "./ui/button";
+import { setAsFavoriteAction } from "@/lib/actions";
 
 export function CloudinaryImage(
   props: {
@@ -15,12 +25,12 @@ export function CloudinaryImage(
   } & Omit<CldImageProps, "src">
 ) {
   const [transition, startTransition] = useTransition();
-
   const { imageData, onUnheart } = props;
 
   const [isFavorited, setIsFavorited] = useState(
     imageData.tags.includes("favorite")
   );
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="relative">
@@ -47,7 +57,40 @@ export function CloudinaryImage(
           className="absolute top-2 left-2 hover:text-red-500 cursor-pointer"
         />
       )}
-      <ImageMenu image={imageData} />
+
+      <div className="absolute top-2 right-2">
+        <DropdownMenu open={open} onOpenChange={setOpen}>
+          <DropdownMenuTrigger asChild>
+            <Button variant="secondary" className="w-8 h-8 p-0">
+              <Menu />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-40">
+            <DropdownMenuItem asChild>
+              <AddToAlbumDialog
+                image={imageData}
+                onClose={() => setOpen(false)}
+              />
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Button
+                className="cursor-pointer flex justify-start pl-4"
+                asChild
+                variant="ghost"
+              >
+                <Link
+                  href={`/edit?publicId=${encodeURIComponent(
+                    imageData.public_id
+                  )}`}
+                >
+                  <Pencil className="mr-2 w-4 h-4" />
+                  Edit
+                </Link>
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   );
 }

@@ -1,8 +1,7 @@
 "use client";
 
-import { CldUploadButton } from "next-cloudinary";
-import { UploadResult } from "../page";
 import { Button } from "@/components/ui/button";
+import { CldUploadButton, type CldUploadWidgetResults } from "next-cloudinary";
 import { useRouter } from "next/navigation";
 
 export default function UploadButton() {
@@ -11,12 +10,12 @@ export default function UploadButton() {
   return (
     <Button asChild>
       <CldUploadButton
-        onUpload={(result: UploadResult) => {
+        onUpload={(result: CldUploadWidgetResults) => {
           setTimeout(() => {
             router.refresh();
           }, 2000);
         }}
-        uploadPreset="giomsr4s"
+        uploadPreset="sqejrxbc"
       >
         <div className="flex gap-2">
           <svg

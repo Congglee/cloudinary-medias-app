@@ -1,9 +1,9 @@
 "use client";
 
+import { CloudinaryImage } from "@/components/cloudinary-image";
+import { ImageGrid } from "@/components/image-grid";
 import { useEffect, useState } from "react";
 import { SearchResult } from "../gallery/page";
-import { ImageGrid } from "@/components/image-grid";
-import { CloudinaryImage } from "@/components/cloudinary-image";
 
 export default function FavoritesList({
   initialResources,
@@ -24,7 +24,7 @@ export default function FavoritesList({
           <CloudinaryImage
             key={imageData.public_id}
             imageData={imageData}
-            width="400"
+            width="500"
             height="300"
             alt="an image of something"
             onUnheart={(unheartedResource) => {

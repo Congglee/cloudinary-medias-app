@@ -14,13 +14,13 @@ import {
   DialogTrigger,
   SideMenuDialogContent,
 } from "@/components/ui/dialog";
-import cloudinary from "cloudinary";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { Folder } from "./albums/page";
 import "./globals.css";
+import { fetchFolders } from "@/lib/data";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,9 +30,7 @@ export const metadata: Metadata = {
 };
 
 async function SideMenu() {
-  const { folders } = (await cloudinary.v2.api.root_folders()) as {
-    folders: Folder[];
-  };
+  const folders = await fetchFolders();
 
   return (
     <div className="space-y-1">
@@ -174,7 +172,7 @@ export default function RootLayout({
         <div className="grid lg:grid-cols-5 gap-4 container">
           <div className="pb-12 hidden lg:block">
             <div className="space-y-4 py-4">
-              <div className="px-3 py-2">
+              <div className="pr-4 py-2">
                 <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
                   Manage
                 </h2>
@@ -184,6 +182,7 @@ export default function RootLayout({
           </div>
           <div className="col-span-3 lg:col-span-4 pt-8">{children}</div>
         </div>
+        <Toaster />
       </body>
     </html>
   );
