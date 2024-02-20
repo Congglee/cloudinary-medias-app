@@ -1,6 +1,7 @@
 import { SearchForm } from "@/app/gallery/search-form";
 import { fetchAlbumDetail } from "@/lib/data";
-import AlbumGrid from "./album-grid";
+// import AlbumGrid from "./album-grid";
+import { LoadMore } from "@/components/load-more";
 
 export default async function GalleryPage({
   params: { albumName },
@@ -18,7 +19,8 @@ export default async function GalleryPage({
           <h1 className="text-4xl font-bold">Album {albumName}</h1>
         </div>
         <SearchForm placeholder="Search by tags..." />
-        <AlbumGrid images={resources} />
+        {/* <AlbumGrid images={resources} /> */}
+        <LoadMore images={resources} />
       </div>
     </section>
   );

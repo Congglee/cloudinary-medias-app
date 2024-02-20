@@ -1,4 +1,5 @@
-import GalleryGrid from "./gallery-grid";
+import { LoadMore } from "@/components/load-more";
+// import GalleryGrid from "./gallery-grid";
 import { SearchForm } from "./search-form";
 import UploadButton from "./upload-button";
 import { fetchImages } from "@/lib/data";
@@ -27,7 +28,8 @@ export default async function GalleryPage({
           <UploadButton />
         </div>
         <SearchForm placeholder="Search by tags..." />
-        <GalleryGrid images={resources} />
+        {/* <GalleryGrid images={resources} /> */}
+        <LoadMore images={resources} />
       </div>
     </section>
   );

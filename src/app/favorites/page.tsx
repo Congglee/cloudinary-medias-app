@@ -1,5 +1,6 @@
+import { LoadMore } from "@/components/load-more";
 import { SearchForm } from "../gallery/search-form";
-import FavoritesList from "./favorites-list";
+// import FavoritesList from "./favorites-list";
 import { fetchImages } from "@/lib/data";
 
 export default async function FavoritesPage() {
@@ -12,7 +13,8 @@ export default async function FavoritesPage() {
           <h1 className="text-4xl font-bold">Favorite Images</h1>
         </div>
         <SearchForm placeholder="Search by tags..." />
-        <FavoritesList initialResources={resources} />
+        {/* <FavoritesList initialResources={resources} /> */}
+        <LoadMore images={resources} />
       </div>
     </section>
   );

@@ -5,20 +5,19 @@ import cloudinary from "cloudinary";
 import { Folder } from "@/app/albums/page";
 import { SearchResult } from "@/app/gallery/page";
 
-export async function fetchImages({
-  query,
-  limit = 30,
-}: {
-  query?: string;
-  limit?: number;
-}) {
+export async function fetchImages({ query }: { query?: string }) {
   try {
-    const { resources } = (await cloudinary.v2.search
+    const searchBuilder = cloudinary.v2.search
       .expression(`resource_type:image${query ? ` AND tags=${query}` : ""}`)
       .sort_by("created_at", "desc")
       .with_field("tags")
-      .max_results(limit)
-      .execute()) as { resources: SearchResult[] };
+      .max_results(200);
+
+    const { resources } = (await searchBuilder.execute()) as {
+      resources: SearchResult[];
+      next_cursor: string;
+    };
+
     return resources;
   } catch (error) {
     console.error("Error:", error);
