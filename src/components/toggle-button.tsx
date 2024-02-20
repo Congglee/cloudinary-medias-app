@@ -41,7 +41,7 @@ export function AuthToggle() {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link
-                href="/sign-in"
+                href="/sign-up"
                 className="cursor-pointer flex gap-2 items-center"
               >
                 <UserPlus size={15} />
