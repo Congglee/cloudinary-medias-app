@@ -3,7 +3,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import cloudinary from "cloudinary";
 import { Folder } from "@/app/albums/page";
-import { SearchResult } from "@/app/gallery/page";
+import { SearchResult } from "@/app/(media)/gallery/page";
 
 export async function fetchImages({ query }: { query?: string }) {
   try {

@@ -1,7 +1,7 @@
 "use client";
 
-import GalleryGrid from "@/app/gallery/gallery-grid";
-import { SearchResult } from "@/app/gallery/page";
+import GalleryGrid from "@/app/(media)/gallery/gallery-grid";
+import { SearchResult } from "@/app/(media)/gallery/page";
 import { usePagination } from "@/hooks/usePagination";
 import Image from "next/image";
 import { useEffect } from "react";

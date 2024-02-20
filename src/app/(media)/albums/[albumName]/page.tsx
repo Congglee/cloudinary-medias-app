@@ -1,4 +1,4 @@
-import { SearchForm } from "@/app/gallery/search-form";
+import { SearchForm } from "@/app/(media)/gallery/search-form";
 import { fetchAlbumDetail } from "@/lib/data";
 // import AlbumGrid from "./album-grid";
 import { LoadMore } from "@/components/load-more";

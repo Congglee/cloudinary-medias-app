@@ -1,6 +1,6 @@
 "use server";
 
-import { SearchResult } from "@/app/gallery/page";
+import { SearchResult } from "@/app/(media)/gallery/page";
 import cloudinary from "cloudinary";
 import { revalidatePath } from "next/cache";
 import { fetchAlbumDetail } from "./data";

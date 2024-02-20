@@ -55,7 +55,7 @@ export function DeleteImageDialog({
       <DialogTrigger asChild>
         <Button variant="ghost" className="w-full flex justify-start pl-4">
           <Trash className="mr-2 h-4 w-4" />
-          <span>Delte</span>
+          <span>Delete</span>
         </Button>
       </DialogTrigger>
       <DialogContent>

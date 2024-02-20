@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchResult } from "@/app/gallery/page";
+import { SearchResult } from "@/app/(media)/gallery/page";
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
 

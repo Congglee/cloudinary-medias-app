@@ -3,14 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CldImage } from "next-cloudinary";
-import { useState } from "react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { motion } from "framer-motion";
 import {
   Select,
   SelectContent,
@@ -18,6 +15,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { dataUrl } from "@/lib/utils";
+import { CldImage } from "next-cloudinary";
+import { useState } from "react";
 
 export default function EditPage({
   searchParams: { publicId },
@@ -38,7 +38,7 @@ export default function EditPage({
   >();
   const [pendingPrompt, setPendingPrompt] = useState("");
   const [prompt, setPrompt] = useState("");
-
+  const [opacity, setOpacity] = useState("50");
   const [amount, setAmount] = useState("80");
   const [color1, setColor1] = useState("blue");
   const [color2, setColor2] = useState("blueviolet");
@@ -77,16 +77,35 @@ export default function EditPage({
             </Popover>
           </div>
           <Button onClick={() => setTransformation("blur")}>Apply Blur</Button>
-          <Button onClick={() => setTransformation("opacity")}>
-            Apply Opacity
-          </Button>
+          <div className="flex flex-col gap-4">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  onClick={() => {
+                    setTransformation("opacity");
+                  }}
+                >
+                  Apply Opacity
+                </Button>
+              </PopoverTrigger>
+
+              <PopoverContent className="flex flex-col gap-3">
+                <Label htmlFor="opacity">Opacity</Label>
+                <Input
+                  id="opacity"
+                  type="number"
+                  value={opacity}
+                  onChange={(e) => setOpacity(e.currentTarget.value)}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
           <div className="flex flex-col gap-4">
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   onClick={() => {
                     setTransformation("tint");
-                    setPrompt(pendingPrompt);
                   }}
                 >
                   Apply Tint Color
@@ -96,9 +115,9 @@ export default function EditPage({
               <PopoverContent className="w-80">
                 <div className="grid gap-4">
                   <div className="space-y-2">
-                    <h4 className="font-medium leading-none">Dimensions</h4>
+                    <h4 className="font-medium leading-none">Tint Color</h4>
                     <p className="text-sm text-muted-foreground">
-                      Set the dimensions for the layer.
+                      Set tint color for image.
                     </p>
                   </div>
                   <div className="grid gap-2">
@@ -180,6 +199,7 @@ export default function EditPage({
               alt="some-image"
               sizes="100vw"
               // crop="thumb"
+              placeholder={dataUrl}
               fillBackground={{
                 prompt,
               }}
@@ -193,6 +213,7 @@ export default function EditPage({
               height="300"
               sizes="100vw"
               alt="some-image"
+              placeholder={dataUrl}
               blur="800"
             />
           )}
@@ -204,7 +225,8 @@ export default function EditPage({
               height="300"
               sizes="100vw"
               alt="some-image"
-              opacity="50"
+              placeholder={dataUrl}
+              opacity={opacity}
             />
           )}
 
@@ -215,6 +237,7 @@ export default function EditPage({
               height="300"
               sizes="100vw"
               alt="some-image"
+              placeholder={dataUrl}
               tint={`equalize:${amount}:${color1}:${color2}`}
             />
           )}
@@ -226,6 +249,7 @@ export default function EditPage({
               height="300"
               sizes="100vw"
               alt="some-image"
+              placeholder={dataUrl}
               grayscale
             />
           )}
@@ -237,6 +261,7 @@ export default function EditPage({
               height="300"
               sizes="100vw"
               alt="some-image"
+              placeholder={dataUrl}
               pixelate
             />
           )}
@@ -248,6 +273,7 @@ export default function EditPage({
               height="300"
               sizes="100vw"
               alt="some-image"
+              placeholder={dataUrl}
               removeBackground
             />
           )}

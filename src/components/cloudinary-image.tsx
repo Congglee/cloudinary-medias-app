@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchResult } from "@/app/gallery/page";
+import { SearchResult } from "@/app/(media)/gallery/page";
 import { FullHeart } from "@/components/icons/full-heart";
 import { Heart } from "@/components/icons/heart";
 import {
@@ -9,15 +9,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Pencil, Trash } from "lucide-react";
+import { setAsFavoriteAction } from "@/lib/actions";
+import { dataUrl } from "@/lib/utils";
+import { Pencil } from "lucide-react";
 import { CldImage, CldImageProps } from "next-cloudinary";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { AddToAlbumDialog } from "./add-to-album-dialog";
+import { DeleteImageDialog } from "./delete-image-dialog";
 import { Menu } from "./icons/menu";
 import { Button } from "./ui/button";
-import { setAsFavoriteAction } from "@/lib/actions";
-import { DeleteImageDialog } from "./delete-image-dialog";
 
 export function CloudinaryImage(
   props: {
@@ -36,7 +37,7 @@ export function CloudinaryImage(
 
   return (
     <div className="relative">
-      <CldImage {...rest} src={imageData.public_id} />
+      <CldImage {...rest} src={imageData.public_id} placeholder={dataUrl} />
       {isFavorited ? (
         <FullHeart
           onClick={() => {
