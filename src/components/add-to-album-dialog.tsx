@@ -1,4 +1,4 @@
-import { Folder } from "@/app/albums/page";
+import { Folder } from "@/app/(media)/albums/page";
 import { SearchResult } from "@/app/(media)/gallery/page";
 import { Button } from "@/components/ui/button";
 import {

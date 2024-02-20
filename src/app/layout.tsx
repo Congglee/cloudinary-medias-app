@@ -1,5 +1,4 @@
 import { NavBar } from "@/components/nav-bar";
-import { SideMenu } from "@/components/side-menu";
 import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";

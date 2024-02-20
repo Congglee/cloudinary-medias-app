@@ -1,8 +1,9 @@
+import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu } from "./icons/menu";
 import { SideMenu } from "./side-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { AuthToggle } from "./toggle-button";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -10,8 +11,6 @@ import {
   DialogTrigger,
   SideMenuDialogContent,
 } from "./ui/dialog";
-import { UserButton } from "@clerk/nextjs";
-import { AuthToggle } from "./toggle-button";
 
 export async function NavBar() {
   return (

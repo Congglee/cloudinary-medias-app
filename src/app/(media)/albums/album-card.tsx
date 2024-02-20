@@ -23,13 +23,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { deleteFolder } from "@/lib/actions";
 import { Trash } from "lucide-react";
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Folder } from "./page";
 
 export function AlbumCard({ folder }: { folder: Folder }) {
   const [open, setOpen] = useState(false);
-  const [isTransition, startTransition] = useTransition();
   const { toast } = useToast();
 
   const form = useForm();
