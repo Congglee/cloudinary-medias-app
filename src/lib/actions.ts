@@ -10,6 +10,10 @@ export async function createFolder(album: string) {
   revalidatePath("/albums");
 }
 
+export async function deleteImage(imagePublicIds: string[]) {
+  await cloudinary.v2.api.delete_resources(imagePublicIds);
+}
+
 export async function deleteFolder(album: string) {
   try {
     await cloudinary.v2.api.delete_folder(album);
@@ -31,13 +35,15 @@ export async function addImageToAlbum(image: SearchResult, album: string) {
       image.public_id,
       `${album}/${publicId}`
     );
+    if (image.folder !== "") {
+      await fetchAlbumDetail(image.folder); // Not optimized yet, looking for another solution 〒▽〒
+    }
   } catch (error) {
     console.error("Error:", error);
     throw new Error("Failed to move image to an album");
   }
 
   revalidatePath(`/albums/[albumName]`, "page"); // revalidatePath failed to update resource images with the latest data (dynamic path)
-  await fetchAlbumDetail(image.folder); // Not optimized yet, looking for another solution 〒▽〒
 }
 
 export async function setAsFavoriteAction(

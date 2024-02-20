@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash } from "lucide-react";
 import { CldImage, CldImageProps } from "next-cloudinary";
 import Link from "next/link";
 import { useState, useTransition } from "react";
@@ -17,6 +17,7 @@ import { AddToAlbumDialog } from "./add-to-album-dialog";
 import { Menu } from "./icons/menu";
 import { Button } from "./ui/button";
 import { setAsFavoriteAction } from "@/lib/actions";
+import { DeleteImageDialog } from "./delete-image-dialog";
 
 export function CloudinaryImage(
   props: {
@@ -25,16 +26,17 @@ export function CloudinaryImage(
   } & Omit<CldImageProps, "src">
 ) {
   const [transition, startTransition] = useTransition();
-  const { imageData, onUnheart } = props;
+  const { imageData, onUnheart, ...rest } = props;
 
   const [isFavorited, setIsFavorited] = useState(
     imageData.tags.includes("favorite")
   );
+  const [publicIds, setPublicIds] = useState([imageData.public_id]);
   const [open, setOpen] = useState(false);
 
   return (
     <div className="relative">
-      <CldImage {...props} src={imageData.public_id} />
+      <CldImage {...rest} src={imageData.public_id} />
       {isFavorited ? (
         <FullHeart
           onClick={() => {
@@ -87,6 +89,12 @@ export function CloudinaryImage(
                   Edit
                 </Link>
               </Button>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <DeleteImageDialog
+                imagePublicIds={publicIds}
+                onClose={() => setOpen(false)}
+              />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -96,7 +96,7 @@ export function AddToAlbumDialog({
         }
       }}
     >
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="ghost">
           <FolderPlus className="mr-2 h-4 w-4" />
           <span>Add to Album</span>

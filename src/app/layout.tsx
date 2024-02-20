@@ -124,7 +124,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="border-b">
           <div className="flex h-16 items-center container mx-auto">
-            <Link href="/" className="flex items-center">
+            <Link href="/" className="hidden sm:flex items-center">
               <Image
                 src="/album.png"
                 alt="icon of this photo album app"
@@ -133,7 +133,7 @@ export default function RootLayout({
               />
               MEDIAS APP
             </Link>
-            <div className="ml-auto flex items-center space-x-4">
+            <div className="sm:ml-auto flex items-center space-x-4">
               <Avatar>
                 <AvatarImage
                   src="https://github.com/shadcn.png"

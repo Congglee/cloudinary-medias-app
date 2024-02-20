@@ -22,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { createFolder } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -34,7 +33,6 @@ const FormSchema = z.object({
 });
 
 export function CreateAlbumForm() {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isTransition, startTransition] = useTransition();
   const { toast } = useToast();
@@ -49,9 +47,6 @@ export function CreateAlbumForm() {
       description: `Your ${data.albumName} album has created.`,
     });
     setOpen(false);
-    startTransition(() => {
-      router.refresh();
-    });
   }
 
   return (
@@ -61,7 +56,7 @@ export function CreateAlbumForm() {
         setOpen(newOpenState);
       }}
     >
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button>
           <div className="flex gap-2 items-center">
             <svg

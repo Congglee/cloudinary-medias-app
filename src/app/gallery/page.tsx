@@ -23,8 +23,8 @@ export default async function GalleryPage({
   return (
     <section>
       <div className="flex flex-col gap-8">
-        <div className="flex justify-between">
-          <h1 className="text-4xl font-bold">Gallery</h1>
+        <div className="flex flex-col gap-4 xs:justify-between xs:flex-row">
+          <h1 className="text-4xl font-bold w-full xs:w-auto">Gallery</h1>
           <UploadButton />
         </div>
         <SearchForm placeholder="Search by tags..." />

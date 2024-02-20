@@ -23,13 +23,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { deleteFolder } from "@/lib/actions";
 import { Trash } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { Folder } from "./page";
 
 export function AlbumCard({ folder }: { folder: Folder }) {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isTransition, startTransition] = useTransition();
   const { toast } = useToast();
@@ -43,9 +41,6 @@ export function AlbumCard({ folder }: { folder: Folder }) {
         description: `Your ${folder.name} album has deleted.`,
       });
       setOpen(false);
-      startTransition(() => {
-        router.refresh();
-      });
     } catch (error) {
       toast({
         title: "Uh oh! Something went wrong.",
@@ -82,7 +77,7 @@ export function AlbumCard({ folder }: { folder: Folder }) {
                 <DialogTitle>Are you absolutely sure?</DialogTitle>
                 <DialogDescription>
                   This action cannot be undone. This will permanently delete
-                  your album and remove your images.
+                  your album.
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
