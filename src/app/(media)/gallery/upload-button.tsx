@@ -15,7 +15,7 @@ export default function UploadButton() {
             router.refresh();
           }, 2000);
         }}
-        uploadPreset="sqejrxbc"
+        uploadPreset={process.env.NEXT_PUBLIC_UPLOAD_PRESET}
         className="gap-2"
       >
         <svg
