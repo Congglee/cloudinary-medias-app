@@ -3,7 +3,8 @@
 import { SearchResult } from "@/app/(media)/gallery/page";
 import cloudinary from "cloudinary";
 import { revalidatePath } from "next/cache";
-import { fetchAlbumDetail } from "./data";
+import { fetchAlbumDetail, fetchImages } from "./data";
+import { redirect } from "next/navigation";
 
 export async function createFolder(album: string) {
   await cloudinary.v2.api.create_folder(album);
@@ -57,4 +58,5 @@ export async function setAsFavoriteAction(
   }
   revalidatePath("/gallery");
   revalidatePath("/favorites");
+  await fetchImages({}); // Fix the error that state isFavorited is not updated (Hope app not crash 😭)
 }
