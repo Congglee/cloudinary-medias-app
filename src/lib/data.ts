@@ -6,6 +6,7 @@ import { SearchResult } from "@/app/(media)/gallery/page";
 import { Folder } from "@/app/(media)/albums/page";
 
 export async function fetchImages({ query }: { query?: string }) {
+  noStore();
   try {
     const searchBuilder = cloudinary.v2.search
       .expression(`resource_type:image${query ? ` AND tags=${query}` : ""}`)
