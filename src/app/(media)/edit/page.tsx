@@ -123,7 +123,7 @@ export default function EditPage({
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           <CldImage src={publicId} width="680" height="300" alt="some-image" />
           {transformation === "generative-fill" && (
             <CldImage
