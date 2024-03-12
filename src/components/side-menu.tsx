@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 import { Button } from "./ui/button";
-import { fetchFolders } from "@/app/(media)/albums/page";
+import { fetchFolders } from "@/lib/data";
 
 export async function SideMenu() {
   const folders = await fetchFolders();

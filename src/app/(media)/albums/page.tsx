@@ -1,22 +1,8 @@
+import { fetchFolders } from "@/lib/data";
 import { AlbumCard } from "./album-card";
 import { CreateAlbumForm } from "./create-album-form";
-import { unstable_noStore as noStore } from "next/cache";
-import cloudinary from "cloudinary";
 
 export type Folder = { name: string; path: string };
-
-export async function fetchFolders() {
-  noStore();
-  try {
-    const { folders } = (await cloudinary.v2.api.root_folders()) as {
-      folders: Folder[];
-    };
-    return folders;
-  } catch (error) {
-    console.error("Error:", error);
-    throw new Error("Failed to fetch cloudinary folders data.");
-  }
-}
 
 export default async function AlbumsPage() {
   const folders = await fetchFolders();

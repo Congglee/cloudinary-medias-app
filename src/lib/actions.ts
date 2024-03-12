@@ -1,9 +1,9 @@
 "use server";
 
-import { fetchAlbumDetail } from "@/app/(media)/albums/[albumName]/page";
-import { SearchResult, fetchImages } from "@/app/(media)/gallery/page";
+import { SearchResult } from "@/app/(media)/gallery/page";
 import cloudinary from "cloudinary";
 import { revalidatePath } from "next/cache";
+import { fetchAlbumDetail, fetchImages } from "./data";
 
 export async function createFolder(album: string) {
   await cloudinary.v2.api.create_folder(album);

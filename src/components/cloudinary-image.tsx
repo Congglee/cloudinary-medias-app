@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { setAsFavoriteAction } from "@/lib/actions";
-import { dataUrl } from "@/lib/utils";
+import { dataUrl } from "@/utils/utils";
 import { Pencil } from "lucide-react";
 import { CldImage, CldImageProps } from "next-cloudinary";
 import Link from "next/link";

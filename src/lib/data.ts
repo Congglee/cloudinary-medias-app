@@ -1,132 +1,57 @@
-export const gravities = [
-  {
-    label: "North East",
-    value: "north_east",
-  },
-  {
-    label: "North",
-    value: "north",
-  },
-  {
-    label: "North West",
-    value: "north_west",
-  },
-  {
-    label: "West",
-    value: "west",
-  },
-  {
-    label: "South West",
-    value: "south_west",
-  },
-  {
-    label: "South",
-    value: "south",
-  },
-  {
-    label: "South East",
-    value: "south_east",
-  },
-  {
-    label: "East",
-    value: "east",
-  },
-  {
-    label: "Center",
-    value: "Center",
-  },
-];
+"use server";
 
-export const textColors = [
-  {
-    label: "White",
-    value: "#fff",
-  },
-  {
-    label: "Zinc",
-    value: "#52525b",
-  },
-  {
-    label: "Slate",
-    value: "#475569",
-  },
-  {
-    label: "Stone",
-    value: "#57534e",
-  },
-  {
-    label: "Gray",
-    value: "#4b5563",
-  },
-  {
-    label: "Neutral",
-    value: "#525252",
-  },
-  {
-    label: "Red",
-    value: "#dc2626",
-  },
-  {
-    label: "Rose",
-    value: "#e11d48",
-  },
-  {
-    label: "Orange",
-    value: "#ea580c",
-  },
-  {
-    label: "Green",
-    value: "#22c55e",
-  },
-  {
-    label: "Blue",
-    value: "#3b82f6",
-  },
-  {
-    label: "Yellow",
-    value: "#facc15",
-  },
-  {
-    label: "Violet",
-    value: "#6d28d9",
-  },
-];
+import { unstable_noStore as noStore } from "next/cache";
+import cloudinary from "cloudinary";
+import { SearchResult } from "@/app/(media)/gallery/page";
+import { Folder } from "@/app/(media)/albums/page";
 
-export const textFontsFamily = [
-  {
-    label: "Roboto Mono",
-    value: "Roboto Mono",
-  },
-  {
-    label: "Roboto",
-    value: "Roboto",
-  },
-  {
-    label: "Poppins",
-    value: "Poppins",
-  },
-  {
-    label: "Lato",
-    value: "Lato",
-  },
-  {
-    label: "Open Sans",
-    value: "Open Sans",
-  },
-  {
-    label: "Montserrat",
-    value: "Montserrat",
-  },
-  {
-    label: "Noto Sans",
-    value: "Noto Sans",
-  },
-  {
-    label: "Source Serif Pro",
-    value: "Source Serif Pro",
-  },
-  {
-    label: "Source Sans Pro",
-    value: "Source Sans Pro",
-  },
-];
+export async function fetchImages({ query }: { query?: string }) {
+  noStore();
+  try {
+    const searchBuilder = cloudinary.v2.search
+      .expression(`resource_type:image${query ? ` AND tags=${query}` : ""}`)
+      .sort_by("created_at", "desc")
+      .with_field("tags")
+      .max_results(200);
+
+    const { resources } = (await searchBuilder.execute()) as {
+      resources: SearchResult[];
+      next_cursor: string;
+    };
+
+    return resources;
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Failed to fetch cloudinary images.");
+  }
+}
+
+export async function fetchFolders() {
+  noStore();
+  try {
+    const { folders } = (await cloudinary.v2.api.root_folders()) as {
+      folders: Folder[];
+    };
+    return folders;
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Failed to fetch cloudinary folders data.");
+  }
+}
+
+export async function fetchAlbumDetail(albumName: string) {
+  noStore();
+  try {
+    const { resources } = (await cloudinary.v2.search
+      .expression(`resource_type:image AND folder=${albumName}`)
+      .sort_by("created_at", "desc")
+      .with_field("tags")
+      .max_results(30)
+      .execute()) as { resources: SearchResult[] };
+
+    return resources;
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Failed to fetch cloudinary album folder detail data.");
+  }
+}

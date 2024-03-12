@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import Link, { LinkProps } from "next/link";
 import { usePathname } from "next/navigation";
 

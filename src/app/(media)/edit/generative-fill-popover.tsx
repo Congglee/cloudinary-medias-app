@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Dispatch, SetStateAction } from "react";
 import { SettingData, Transform } from "./page";
-import { gravities } from "@/lib/data";
+import { gravities } from "@/utils/data";
 
 export function GenerativeFillPopover({
   handleTransform,

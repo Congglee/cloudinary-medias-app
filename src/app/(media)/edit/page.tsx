@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { dataUrl } from "@/lib/utils";
+import { dataUrl } from "@/utils/utils";
 import { CldImage } from "next-cloudinary";
 import { useState } from "react";
 import { AddCustomTextDrawer } from "./add-custom-text-drawer";

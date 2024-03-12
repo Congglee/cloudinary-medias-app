@@ -12,8 +12,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
-import { gravities, textColors, textFontsFamily } from "@/lib/data";
-import { cn } from "@/lib/utils";
+import { gravities, textColors, textFontsFamily } from "@/utils/data";
+import { cn } from "@/utils/utils";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { SettingData, Transform } from "./page";
 

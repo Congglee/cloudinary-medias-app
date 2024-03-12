@@ -1,5 +1,4 @@
-import { fetchFolders } from "@/app/(media)/albums/page";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { ActiveLink } from "./active-link";
@@ -11,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { fetchFolders } from "@/lib/data";
 
 export async function NavMenu({
   className,

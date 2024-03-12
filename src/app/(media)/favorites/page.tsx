@@ -1,6 +1,6 @@
 import { LoadMore } from "@/components/load-more";
 import { SearchForm } from "../gallery/search-form";
-import { fetchImages } from "../gallery/page";
+import { fetchImages } from "@/lib/data";
 // import FavoritesList from "./favorites-list";
 
 export default async function FavoritesPage() {
