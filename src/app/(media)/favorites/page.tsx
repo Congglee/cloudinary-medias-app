@@ -1,7 +1,7 @@
 import { LoadMore } from "@/components/load-more";
 import { SearchForm } from "../gallery/search-form";
+import { fetchImages } from "../gallery/page";
 // import FavoritesList from "./favorites-list";
-import { fetchImages } from "@/lib/data";
 
 export default async function FavoritesPage() {
   const resources = await fetchImages({ query: "favorite" });

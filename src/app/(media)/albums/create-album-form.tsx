@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { createFolder } from "@/lib/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -34,7 +34,6 @@ const FormSchema = z.object({
 
 export function CreateAlbumForm() {
   const [open, setOpen] = useState(false);
-  const [isTransition, startTransition] = useTransition();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof FormSchema>>({

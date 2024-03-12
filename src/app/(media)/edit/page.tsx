@@ -1,23 +1,43 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { dataUrl } from "@/lib/utils";
 import { CldImage } from "next-cloudinary";
 import { useState } from "react";
+import { AddCustomTextDrawer } from "./add-custom-text-drawer";
+import { GenerativeFillPopover } from "./generative-fill-popover";
+import { OpacityPopover } from "./opacity-popover";
+import { TintColorPopover } from "./tint-color-popover";
+
+export type Transform =
+  | undefined
+  | "generative-fill"
+  | "blur"
+  | "grayscale"
+  | "pixelate"
+  | "bg-remove"
+  | "opacity"
+  | "tint"
+  | "custom-text";
+
+export type SettingData = {
+  prompt: string;
+  opacity: string;
+  amount: string;
+  color1: string;
+  color2: string;
+  x: number;
+  y: number;
+  text: string;
+  angle: number;
+  gravity: string;
+  textColor: string;
+  fontFamily: string;
+  fontSize: number;
+  fontWeight: string;
+  textDecoration: string;
+  letterSpacing: number;
+};
 
 export default function EditPage({
   searchParams: { publicId },
@@ -26,22 +46,29 @@ export default function EditPage({
     publicId: string;
   };
 }) {
-  const [transformation, setTransformation] = useState<
-    | undefined
-    | "generative-fill"
-    | "blur"
-    | "grayscale"
-    | "pixelate"
-    | "bg-remove"
-    | "opacity"
-    | "tint"
-  >();
-  const [pendingPrompt, setPendingPrompt] = useState("");
-  const [prompt, setPrompt] = useState("");
-  const [opacity, setOpacity] = useState("50");
-  const [amount, setAmount] = useState("80");
-  const [color1, setColor1] = useState("blue");
-  const [color2, setColor2] = useState("blueviolet");
+  const [transformation, setTransformation] = useState<Transform>();
+  const [settings, setSettings] = useState<SettingData>({
+    prompt: "cake",
+    opacity: "50",
+    amount: "80",
+    color1: "blue",
+    color2: "blueviolet",
+    x: 0,
+    y: 250,
+    text: "Hello World",
+    angle: 0,
+    gravity: "south",
+    textColor: "#fff",
+    fontFamily: "Roboto Mono",
+    fontSize: 18,
+    fontWeight: "normal",
+    textDecoration: "none",
+    letterSpacing: 0,
+  });
+
+  const handleTransform = (value: Transform) => {
+    setTransformation(value);
+  };
 
   return (
     <section>
@@ -54,162 +81,69 @@ export default function EditPage({
           <Button variant="ghost" onClick={() => setTransformation(undefined)}>
             Clear All
           </Button>
-          <div className="flex flex-col gap-4">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  onClick={() => {
-                    setTransformation("generative-fill");
-                    setPrompt(pendingPrompt);
-                  }}
-                >
-                  Apply Generative Fill
-                </Button>
-              </PopoverTrigger>
-
-              <PopoverContent className="flex flex-col gap-3">
-                <Label>Prompt</Label>
-                <Input
-                  value={pendingPrompt}
-                  onChange={(e) => setPendingPrompt(e.currentTarget.value)}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+          <GenerativeFillPopover
+            handleTransform={handleTransform}
+            handleSettings={setSettings}
+            prompt={settings.prompt}
+            gravity={settings.gravity}
+          />
+          <AddCustomTextDrawer
+            handleTransform={handleTransform}
+            handleSettings={setSettings}
+            text={settings.text}
+            x={settings.x}
+            y={settings.y}
+            angle={settings.angle}
+            gravity={settings.gravity}
+            fontSize={settings.fontSize}
+            letterSpacing={settings.letterSpacing}
+          />
           <Button onClick={() => setTransformation("blur")}>Apply Blur</Button>
-          <div className="flex flex-col gap-4">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  onClick={() => {
-                    setTransformation("opacity");
-                  }}
-                >
-                  Apply Opacity
-                </Button>
-              </PopoverTrigger>
-
-              <PopoverContent className="flex flex-col gap-3">
-                <Label htmlFor="opacity">Opacity</Label>
-                <Input
-                  id="opacity"
-                  type="number"
-                  value={opacity}
-                  onChange={(e) => setOpacity(e.currentTarget.value)}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-          <div className="flex flex-col gap-4">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  onClick={() => {
-                    setTransformation("tint");
-                  }}
-                >
-                  Apply Tint Color
-                </Button>
-              </PopoverTrigger>
-
-              <PopoverContent className="w-80">
-                <div className="grid gap-4">
-                  <div className="space-y-2">
-                    <h4 className="font-medium leading-none">Tint Color</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Set tint color for image.
-                    </p>
-                  </div>
-                  <div className="grid gap-2">
-                    <div className="grid grid-cols-3 items-center gap-4">
-                      <Label htmlFor="amount">Amount</Label>
-                      <Input
-                        id="amount"
-                        type="number"
-                        value={amount}
-                        onChange={(e) => setAmount(e.currentTarget.value)}
-                        className="col-span-2 h-8"
-                      />
-                    </div>
-                    <div className="grid grid-cols-3 items-center gap-4">
-                      <Label htmlFor="color1">Color 1</Label>
-                      <Select
-                        onValueChange={(value) => setColor1(value)}
-                        defaultValue={color1}
-                      >
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Choose color 1" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="yellow">Yellow</SelectItem>
-                          <SelectItem value="red">Red</SelectItem>
-                          <SelectItem value="blue">Blue</SelectItem>
-                          <SelectItem value="orange">Orange</SelectItem>
-                          <SelectItem value="black">Black</SelectItem>
-                          <SelectItem value="green">Green</SelectItem>
-                          <SelectItem value="purple">Purple</SelectItem>
-                          <SelectItem value="white">White</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="grid grid-cols-3 items-center gap-4">
-                      <Label htmlFor="color2">Color 2</Label>
-                      <Select
-                        onValueChange={(value) => setColor2(value)}
-                        defaultValue={color2}
-                      >
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Choose color 2" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="greenyellow">
-                            Lime Green
-                          </SelectItem>
-                          <SelectItem value="blueviolet">
-                            Blue Violet
-                          </SelectItem>
-                          <SelectItem value="redblack">Maroon</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
-          </div>
+          <OpacityPopover
+            handleSettings={setSettings}
+            handleTransform={handleTransform}
+            opacity={settings.opacity}
+          />
+          <TintColorPopover
+            handleSettings={setSettings}
+            amount={settings.amount}
+            color1={settings.color1}
+            color2={settings.color2}
+            handleTransform={handleTransform}
+          />
           <Button onClick={() => setTransformation("grayscale")}>
             Convert to Gray
           </Button>
           <Button onClick={() => setTransformation("pixelate")}>
             Pixelate
           </Button>
+
           <Button onClick={() => setTransformation("bg-remove")}>
             Remove Background
           </Button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
-          <CldImage src={publicId} width="500" height="300" alt="some-image" />
-
+          <CldImage src={publicId} width="680" height="300" alt="some-image" />
           {transformation === "generative-fill" && (
             <CldImage
               src={publicId}
-              width="500"
+              width="680"
               height="300"
               alt="some-image"
               sizes="100vw"
-              // crop="thumb"
               placeholder={dataUrl}
               fillBackground={{
-                prompt,
+                crop: "pad",
+                gravity: settings.gravity,
+                prompt: settings.prompt,
               }}
             />
           )}
-
           {transformation === "blur" && (
             <CldImage
               src={publicId}
-              width="500"
+              width="680"
               height="300"
               sizes="100vw"
               alt="some-image"
@@ -217,35 +151,32 @@ export default function EditPage({
               blur="800"
             />
           )}
-
           {transformation === "opacity" && (
             <CldImage
               src={publicId}
-              width="500"
+              width="680"
               height="300"
               sizes="100vw"
               alt="some-image"
               placeholder={dataUrl}
-              opacity={opacity}
+              opacity={settings.opacity}
             />
           )}
-
           {transformation === "tint" && (
             <CldImage
               src={publicId}
-              width="500"
+              width="680"
               height="300"
               sizes="100vw"
               alt="some-image"
               placeholder={dataUrl}
-              tint={`equalize:${amount}:${color1}:${color2}`}
+              tint={`equalize:${settings.amount}:${settings.color1}:${settings.color2}`}
             />
           )}
-
           {transformation === "grayscale" && (
             <CldImage
               src={publicId}
-              width="500"
+              width="680"
               height="300"
               sizes="100vw"
               alt="some-image"
@@ -253,11 +184,10 @@ export default function EditPage({
               grayscale
             />
           )}
-
           {transformation === "pixelate" && (
             <CldImage
               src={publicId}
-              width="500"
+              width="680"
               height="300"
               sizes="100vw"
               alt="some-image"
@@ -265,11 +195,39 @@ export default function EditPage({
               pixelate
             />
           )}
-
+          {transformation === "custom-text" && (
+            <CldImage
+              src={publicId}
+              width="680"
+              height="300"
+              sizes="100vw"
+              alt="some-image"
+              placeholder={dataUrl}
+              overlays={[
+                {
+                  position: {
+                    x: settings.x,
+                    y: settings.y,
+                    angle: settings.angle,
+                    gravity: settings.gravity,
+                  },
+                  text: {
+                    color: settings.textColor,
+                    fontFamily: settings.fontFamily,
+                    fontSize: settings.fontSize,
+                    fontWeight: settings.fontWeight,
+                    antialias: settings.textDecoration,
+                    letterSpacing: settings.letterSpacing,
+                    text: settings.text,
+                  },
+                },
+              ]}
+            />
+          )}
           {transformation === "bg-remove" && (
             <CldImage
               src={publicId}
-              width="500"
+              width="680"
               height="300"
               sizes="100vw"
               alt="some-image"

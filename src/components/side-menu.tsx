@@ -1,4 +1,3 @@
-import { fetchFolders } from "@/lib/data";
 import Link from "next/link";
 import { Heart } from "./icons/heart";
 import {
@@ -8,6 +7,7 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 import { Button } from "./ui/button";
+import { fetchFolders } from "@/app/(media)/albums/page";
 
 export async function SideMenu() {
   const folders = await fetchFolders();

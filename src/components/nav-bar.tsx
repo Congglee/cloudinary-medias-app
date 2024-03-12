@@ -5,18 +5,15 @@ import { Menu } from "./icons/menu";
 import { SideMenu } from "./side-menu";
 import { AuthToggle } from "./toggle-button";
 import { Button } from "./ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogTrigger,
-  SideMenuDialogContent,
-} from "./ui/dialog";
+import { DialogClose } from "./ui/dialog";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { NavMenu } from "./nav-menu";
 
 export async function NavBar() {
   return (
     <div className="border-b">
       <div className="flex h-16 items-center container mx-auto">
-        <Link href="/" className="hidden sm:flex items-center">
+        <Link href="/" className="hidden sm:flex items-center mr-4">
           <Image
             src="/album.png"
             alt="icon of this photo album app"
@@ -25,6 +22,7 @@ export async function NavBar() {
           />
           MEDIAS APP
         </Link>
+        <NavMenu />
         <div className="sm:ml-auto flex items-center space-x-4">
           <UserButton
             afterSignOutUrl="/gallery"
@@ -35,18 +33,17 @@ export async function NavBar() {
             }}
           />
           <AuthToggle />
-          <div className="lg:hidden">
-            <Dialog>
-              <DialogTrigger asChild>
+          <div className="sm:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
                 <Button
                   variant="ghost"
                   className="border border-input hover:bg-accent hover:text-accent-foreground"
                 >
                   <Menu />
                 </Button>
-              </DialogTrigger>
-
-              <SideMenuDialogContent>
+              </SheetTrigger>
+              <SheetContent side="left">
                 <nav className="mt-5 flex-1 px-2 space-y-1">
                   <SideMenu />
                 </nav>
@@ -55,8 +52,8 @@ export async function NavBar() {
                     Close
                   </DialogClose>
                 </div>
-              </SideMenuDialogContent>
-            </Dialog>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>

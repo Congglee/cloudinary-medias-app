@@ -1,10 +1,9 @@
 "use server";
 
-import { SearchResult } from "@/app/(media)/gallery/page";
+import { fetchAlbumDetail } from "@/app/(media)/albums/[albumName]/page";
+import { SearchResult, fetchImages } from "@/app/(media)/gallery/page";
 import cloudinary from "cloudinary";
 import { revalidatePath } from "next/cache";
-import { fetchAlbumDetail, fetchImages } from "./data";
-import { redirect } from "next/navigation";
 
 export async function createFolder(album: string) {
   await cloudinary.v2.api.create_folder(album);
@@ -43,8 +42,7 @@ export async function addImageToAlbum(image: SearchResult, album: string) {
     console.error("Error:", error);
     throw new Error("Failed to move image to an album");
   }
-
-  revalidatePath(`/albums/[albumName]`, "page"); // revalidatePath failed to update resource images with the latest data (dynamic path)
+  revalidatePath("/albums/[albumName]", "page"); // revalidatePath failed to update resource images with the latest data (dynamic path)
 }
 
 export async function setAsFavoriteAction(
@@ -58,5 +56,5 @@ export async function setAsFavoriteAction(
   }
   revalidatePath("/gallery");
   revalidatePath("/favorites");
-  await fetchImages({}); // Fix the error that state isFavorited is not updated (Hope app not crash 😭)
+  await fetchImages({}); // Fix the error that state isFavorited is not updated 😭
 }
