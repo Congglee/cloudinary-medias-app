@@ -17,6 +17,22 @@ import { cn } from "@/utils/utils";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { SettingData, Transform } from "./page";
 
+interface AddCustomTextProps {
+  handleTransform: (value: Transform) => void;
+  handleSettings: Dispatch<SetStateAction<SettingData>>;
+  text: string;
+  x: number;
+  y: number;
+  angle: number;
+  gravity?: string;
+  fontSize: number;
+  letterSpacing: number;
+  imageSize: {
+    width: number;
+    height: number;
+  };
+}
+
 export function AddCustomTextDrawer({
   handleTransform,
   handleSettings,
@@ -27,17 +43,8 @@ export function AddCustomTextDrawer({
   gravity,
   fontSize,
   letterSpacing,
-}: {
-  handleTransform: (value: Transform) => void;
-  handleSettings: Dispatch<SetStateAction<SettingData>>;
-  text: string;
-  x: number;
-  y: number;
-  angle: number;
-  gravity?: string;
-  fontSize: number;
-  letterSpacing: number;
-}) {
+  imageSize,
+}: AddCustomTextProps) {
   const [activeColor, setActiveColor] = useState("White");
   const [activeFont, setActiveFont] = useState("Roboto Mono");
   const [activeFontWeight, setActiveFontWeight] = useState("normal");
@@ -101,8 +108,8 @@ export function AddCustomTextDrawer({
                   <div className="flex flex-col col-span-2 gap-2">
                     <Slider
                       defaultValue={[x]}
-                      max={300}
-                      min={-300}
+                      max={imageSize.width ?? 500}
+                      min={-imageSize.width ?? 500}
                       step={1}
                       className="h-5 cursor-pointer"
                       onValueChange={(value) => {
@@ -117,8 +124,8 @@ export function AddCustomTextDrawer({
                       type="number"
                       className="h-8 cursor-pointer"
                       value={x}
-                      min="-300"
-                      max="300"
+                      min={-imageSize.width ?? 500}
+                      max={imageSize.width ?? 500}
                       step="1"
                       onChange={(e) => {
                         handleSettings((prevSettings) => ({
@@ -134,7 +141,7 @@ export function AddCustomTextDrawer({
                   <div className="flex flex-col col-span-2 gap-2">
                     <Slider
                       defaultValue={[y]}
-                      max={500}
+                      max={imageSize.height ?? 750}
                       min={0}
                       step={1}
                       className="h-5 cursor-pointer"
@@ -151,7 +158,7 @@ export function AddCustomTextDrawer({
                       className="h-8 cursor-pointer"
                       value={y}
                       min="0"
-                      max="750"
+                      max={imageSize.height ?? 750}
                       step="1"
                       onChange={(e) => {
                         handleSettings((prevSettings) => ({

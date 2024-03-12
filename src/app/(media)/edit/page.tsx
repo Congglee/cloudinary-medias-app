@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { dataUrl } from "@/utils/utils";
 import { CldImage } from "next-cloudinary";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddCustomTextDrawer } from "./add-custom-text-drawer";
 import { GenerativeFillPopover } from "./generative-fill-popover";
 import { OpacityPopover } from "./opacity-popover";
@@ -47,6 +47,10 @@ export default function EditPage({
   };
 }) {
   const [transformation, setTransformation] = useState<Transform>();
+  const [imageSize, setImageSize] = useState<{
+    width: number;
+    height: number;
+  }>({ width: 0, height: 0 });
   const [settings, setSettings] = useState<SettingData>({
     prompt: "cake",
     opacity: "50",
@@ -65,6 +69,17 @@ export default function EditPage({
     textDecoration: "none",
     letterSpacing: 0,
   });
+
+  useEffect(() => {
+    fetch(`/api/get-single-resource?publicId=${publicId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setImageSize({
+          width: data.resource.width,
+          height: data.resource.height,
+        });
+      });
+  }, [publicId]);
 
   const handleTransform = (value: Transform) => {
     setTransformation(value);
@@ -97,6 +112,7 @@ export default function EditPage({
             gravity={settings.gravity}
             fontSize={settings.fontSize}
             letterSpacing={settings.letterSpacing}
+            imageSize={imageSize}
           />
           <Button onClick={() => setTransformation("blur")}>Apply Blur</Button>
           <OpacityPopover
